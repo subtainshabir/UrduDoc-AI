@@ -488,6 +488,19 @@ body {
     margin: 1rem 1.5rem;
 }
 
+.extracted-text-empty {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1rem 1.5rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
 /* Chat panel */
 
 .chat-panel {

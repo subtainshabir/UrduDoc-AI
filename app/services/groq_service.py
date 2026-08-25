@@ -41,20 +41,20 @@ def _encode_image(image_path: str) -> str:
 
 def extract_text_from_image(image_path: str) -> dict:
     if not is_configured():
-        return {"status": "failed", "error": "GROQ_API_KEY is not configured."}
+        return {"status": "failed", "extracted_text": None, "error": "GROQ_API_KEY is not configured."}
 
     if not os.path.isfile(image_path):
-        return {"status": "failed", "error": "Image file not found."}
+        return {"status": "failed", "extracted_text": None, "error": "Image file not found."}
 
     extension = os.path.splitext(image_path)[1].lower()
     mime_type = MIME_TYPES.get(extension)
     if not mime_type:
-        return {"status": "failed", "error": "Unsupported image format."}
+        return {"status": "failed", "extracted_text": None, "error": "Unsupported image format."}
 
     try:
         base64_image = _encode_image(image_path)
     except Exception:
-        return {"status": "failed", "error": "Could not read the image file."}
+        return {"status": "failed", "extracted_text": None, "error": "Could not read the image file."}
 
     try:
         client = Groq(api_key=GROQ_API_KEY, timeout=60.0)
@@ -78,23 +78,29 @@ def extract_text_from_image(image_path: str) -> dict:
             max_completion_tokens=2048,
         )
     except APITimeoutError:
-        return {"status": "failed", "error": "The request to Groq timed out. Please try again."}
+        return {"status": "failed", "extracted_text": None, "error": "The request to Groq timed out. Please try again."}
     except APIConnectionError:
-        return {"status": "failed", "error": "Could not connect to Groq. Check your network and try again."}
+        return {"status": "failed", "extracted_text": None, "error": "Could not connect to Groq. Check your network and try again."}
     except APIError as error:
         status_code = getattr(error, "status_code", None)
         if status_code == 401:
-            return {"status": "failed", "error": "Groq rejected the API key. Check GROQ_API_KEY."}
-        return {"status": "failed", "error": "Groq API returned an error. Please try again."}
+            return {"status": "failed", "extracted_text": None, "error": "Groq rejected the API key. Check GROQ_API_KEY."}
+        return {"status": "failed", "extracted_text": None, "error": "Groq API returned an error. Please try again."}
     except Exception:
-        return {"status": "failed", "error": "Unexpected error while contacting Groq."}
+        return {"status": "failed", "extracted_text": None, "error": "Unexpected error while contacting Groq."}
+
+    if completion is None or not getattr(completion, "choices", None):
+        return {"status": "failed", "extracted_text": None, "error": "No response received from Groq."}
 
     try:
         extracted_text = completion.choices[0].message.content
     except (IndexError, AttributeError):
-        return {"status": "failed", "error": "Unexpected response format from Groq."}
+        return {"status": "failed", "extracted_text": None, "error": "Unexpected response format from Groq."}
 
-    if not extracted_text or not extracted_text.strip():
-        return {"status": "failed", "error": "Groq returned an empty response."}
+    if not isinstance(extracted_text, str):
+        return {"status": "failed", "extracted_text": None, "error": "Unexpected response format from Groq."}
 
-    return {"status": "success", "extracted_text": extracted_text.strip()}
+    if not extracted_text.strip():
+        return {"status": "empty", "extracted_text": "", "error": "No text was detected in this image."}
+
+    return {"status": "success", "extracted_text": extracted_text.strip(), "error": None}

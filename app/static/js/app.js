@@ -8,7 +8,9 @@ const documentView = document.getElementById("document-view");
 const previewImage = document.getElementById("preview-image");
 const docFilename = document.getElementById("doc-filename");
 const docFiletype = document.getElementById("doc-filetype");
+const docUploadDate = document.getElementById("doc-upload-date");
 const docStatus = document.getElementById("doc-status");
+const docLanguage = document.getElementById("doc-language");
 
 const newDocumentBtn = document.getElementById("new-document-btn");
 const attachBtn = document.getElementById("attach-btn");
@@ -19,6 +21,7 @@ const extractTextBtn = document.getElementById("extract-text-btn");
 const extractedTextView = document.getElementById("extracted-text-view");
 const extractedTextLoading = document.getElementById("extracted-text-loading");
 const extractedTextError = document.getElementById("extracted-text-error");
+const extractedTextEmpty = document.getElementById("extracted-text-empty");
 const extractedTextContent = document.getElementById("extracted-text-content");
 
 let currentDocumentId = null;
@@ -38,6 +41,21 @@ function clearError() {
     errorBanner.textContent = "";
 }
 
+function renderMetadata(metadata) {
+    if (!metadata) {
+        return;
+    }
+    if (metadata.upload_timestamp) {
+        docUploadDate.textContent = new Date(metadata.upload_timestamp).toLocaleDateString();
+    }
+    if (metadata.processing_status) {
+        docStatus.textContent = metadata.processing_status;
+    }
+    if (metadata.language) {
+        docLanguage.textContent = metadata.language;
+    }
+}
+
 function showWelcomeState() {
     documentView.classList.add("d-none");
     extractedTextView.classList.add("d-none");
@@ -46,6 +64,9 @@ function showWelcomeState() {
     selectedFileName.textContent = "";
     currentDocumentId = null;
     extractedTextContent.textContent = "";
+    extractedTextEmpty.classList.add("d-none");
+    docUploadDate.textContent = "";
+    docLanguage.textContent = "";
     clearError();
 }
 
@@ -80,10 +101,12 @@ form.addEventListener("submit", async (event) => {
         docFiletype.textContent = data.content_type;
         docStatus.textContent = data.status;
         currentDocumentId = data.document_id;
+        renderMetadata(data.metadata);
 
         extractedTextView.classList.add("d-none");
         extractedTextContent.textContent = "";
         extractedTextError.classList.add("d-none");
+        extractedTextEmpty.classList.add("d-none");
 
         welcomeState.classList.add("d-none");
         documentView.classList.remove("d-none");
@@ -99,6 +122,7 @@ extractTextBtn.addEventListener("click", async () => {
 
     extractedTextView.classList.remove("d-none");
     extractedTextError.classList.add("d-none");
+    extractedTextEmpty.classList.add("d-none");
     extractedTextContent.textContent = "";
     extractedTextLoading.classList.remove("d-none");
     extractTextBtn.disabled = true;
@@ -110,13 +134,22 @@ extractTextBtn.addEventListener("click", async () => {
 
         const data = await response.json();
 
-        if (!response.ok || data.status !== "success") {
-            extractedTextError.textContent = data.error || data.detail || "Could not extract text from this document.";
+        if (!response.ok) {
+            extractedTextError.textContent = data.detail || "Could not extract text from this document.";
             extractedTextError.classList.remove("d-none");
             return;
         }
 
-        extractedTextContent.textContent = data.extracted_text;
+        if (data.status === "success") {
+            extractedTextContent.textContent = data.extracted_text;
+        } else if (data.status === "empty") {
+            extractedTextEmpty.classList.remove("d-none");
+        } else {
+            extractedTextError.textContent = data.error || "Could not extract text from this document.";
+            extractedTextError.classList.remove("d-none");
+        }
+
+        renderMetadata(data.metadata);
     } catch (error) {
         extractedTextError.textContent = "Something went wrong while extracting text. Please try again.";
         extractedTextError.classList.remove("d-none");

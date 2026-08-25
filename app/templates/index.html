@@ -77,8 +77,16 @@
                                     <span class="meta-value" id="doc-filetype"></span>
                                 </div>
                                 <div class="document-meta-row">
+                                    <span class="meta-label">Uploaded</span>
+                                    <span class="meta-value" id="doc-upload-date"></span>
+                                </div>
+                                <div class="document-meta-row">
                                     <span class="meta-label">Status</span>
                                     <span class="meta-value doc-status-badge" id="doc-status"></span>
+                                </div>
+                                <div class="document-meta-row">
+                                    <span class="meta-label">Language</span>
+                                    <span class="meta-value doc-status-badge" id="doc-language"></span>
                                 </div>
                             </div>
                             <div class="document-actions">
@@ -98,6 +106,9 @@
                                 <span class="spinner"></span> Reading document with Groq Vision...
                             </div>
                             <div id="extracted-text-error" class="upload-error d-none"></div>
+                            <div id="extracted-text-empty" class="extracted-text-empty d-none">
+                                <i class="bi bi-file-earmark-x"></i> No text was detected in this document.
+                            </div>
                             <pre id="extracted-text-content" class="extracted-text-content" dir="auto"></pre>
                         </div>
                     </section>
