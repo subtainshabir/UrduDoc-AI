@@ -7,5 +7,14 @@
     "upload_timestamp": "2026-08-25T00:03:59.700009+00:00",
     "processing_status": "completed",
     "language": "mixed"
+  },
+  "a3ad1ffe26e14d6bac435bf85d8f3ee7.png": {
+    "document_id": "a3ad1ffe26e14d6bac435bf85d8f3ee7.png",
+    "original_filename": "Screenshot 2026-08-25 051040.png",
+    "file_type": "image/png",
+    "file_size": 102902,
+    "upload_timestamp": "2026-08-25T00:11:01.573213+00:00",
+    "processing_status": "completed",
+    "language": "mixed"
   }
 }

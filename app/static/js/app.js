@@ -6,6 +6,7 @@ const errorBanner = document.getElementById("error-banner");
 const welcomeState = document.getElementById("welcome-state");
 const documentView = document.getElementById("document-view");
 const previewImage = document.getElementById("preview-image");
+const previewImageError = document.getElementById("preview-image-error");
 const docFilename = document.getElementById("doc-filename");
 const docFiletype = document.getElementById("doc-filetype");
 const docUploadDate = document.getElementById("doc-upload-date");
@@ -18,17 +19,29 @@ const sidebar = document.getElementById("sidebar");
 const sidebarToggle = document.getElementById("sidebar-toggle");
 
 const extractTextBtn = document.getElementById("extract-text-btn");
-const extractedTextView = document.getElementById("extracted-text-view");
 const extractedTextLoading = document.getElementById("extracted-text-loading");
 const extractedTextError = document.getElementById("extracted-text-error");
 const extractedTextEmpty = document.getElementById("extracted-text-empty");
+const extractedTextPending = document.getElementById("extracted-text-pending");
 const extractedTextContent = document.getElementById("extracted-text-content");
 
+const docList = document.getElementById("doc-list");
+const docListEmpty = document.getElementById("doc-list-empty");
+
 let currentDocumentId = null;
+let selectedLibraryDocumentId = null;
 
 imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
     selectedFileName.textContent = file ? file.name : "";
+});
+
+previewImage.addEventListener("error", () => {
+    if (!previewImage.getAttribute("src")) {
+        return;
+    }
+    previewImage.classList.add("d-none");
+    previewImageError.classList.remove("d-none");
 });
 
 function showError(message) {
@@ -56,18 +69,170 @@ function renderMetadata(metadata) {
     }
 }
 
+function setExtractedTextState(state, options = {}) {
+    extractedTextLoading.classList.add("d-none");
+    extractedTextError.classList.add("d-none");
+    extractedTextEmpty.classList.add("d-none");
+    extractedTextPending.classList.add("d-none");
+    extractedTextContent.textContent = "";
+
+    if (state === "loading") {
+        extractedTextLoading.classList.remove("d-none");
+    } else if (state === "error") {
+        extractedTextError.textContent = options.message || "Could not extract text from this document.";
+        extractedTextError.classList.remove("d-none");
+    } else if (state === "empty") {
+        extractedTextEmpty.classList.remove("d-none");
+    } else if (state === "pending") {
+        extractedTextPending.classList.remove("d-none");
+    } else if (state === "content") {
+        extractedTextContent.textContent = options.text || "";
+    }
+}
+
+function highlightActiveDocument(documentId) {
+    selectedLibraryDocumentId = documentId;
+    const items = docList.querySelectorAll(".doc-list-item");
+    items.forEach((item) => {
+        item.classList.toggle("active", item.dataset.id === documentId);
+    });
+}
+
+function renderDocumentDetail(detail) {
+    currentDocumentId = detail.document_id;
+
+    docFilename.textContent = detail.filename;
+    docFiletype.textContent = detail.file_type;
+    docUploadDate.textContent = detail.upload_timestamp
+        ? new Date(detail.upload_timestamp).toLocaleDateString()
+        : "";
+    docStatus.textContent = detail.processing_status;
+    docLanguage.textContent = detail.language;
+
+    previewImageError.classList.add("d-none");
+    previewImage.classList.remove("d-none");
+    previewImage.src = detail.image_url ? `${detail.image_url}?t=${Date.now()}` : "";
+
+    if (detail.processing_status === "completed" && detail.extracted_text) {
+        setExtractedTextState("content", { text: detail.extracted_text });
+    } else if (detail.processing_status === "completed") {
+        setExtractedTextState("empty");
+    } else if (detail.processing_status === "failed") {
+        setExtractedTextState("error", { message: "Text extraction failed for this document. Try Extract text again." });
+    } else {
+        setExtractedTextState("pending");
+    }
+
+    clearError();
+    welcomeState.classList.add("d-none");
+    documentView.classList.remove("d-none");
+    highlightActiveDocument(detail.document_id);
+}
+
+async function selectLibraryDocument(documentId) {
+    clearError();
+    try {
+        const response = await fetch(`/api/documents/${documentId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            showError(data.detail || "Could not load that document.");
+            return;
+        }
+
+        renderDocumentDetail(data);
+    } catch (error) {
+        showError("Could not load that document. Please try again.");
+    }
+}
+
+async function loadDocumentLibrary() {
+    try {
+        const response = await fetch("/api/documents");
+        const documents = await response.json();
+
+        docList.innerHTML = "";
+
+        if (!documents.length) {
+            docListEmpty.classList.remove("d-none");
+            return;
+        }
+
+        docListEmpty.classList.add("d-none");
+
+        documents.forEach((doc) => {
+            const item = document.createElement("li");
+            item.className = "doc-list-item";
+            item.dataset.id = doc.document_id;
+            if (doc.document_id === selectedLibraryDocumentId) {
+                item.classList.add("active");
+            }
+
+            const uploadDate = doc.upload_timestamp
+                ? new Date(doc.upload_timestamp).toLocaleDateString()
+                : "";
+
+            item.innerHTML = `
+                <i class="bi bi-file-earmark-text doc-item-icon"></i>
+                <div class="doc-item-text">
+                    <div class="doc-item-name">${doc.filename}</div>
+                    <div class="doc-item-subtitle">${doc.language} · ${doc.processing_status} · ${uploadDate}</div>
+                </div>
+                <button class="doc-item-delete" type="button" title="Delete document">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+
+            docList.appendChild(item);
+        });
+    } catch (error) {
+        docListEmpty.classList.remove("d-none");
+    }
+}
+
+docList.addEventListener("click", async (event) => {
+    const deleteBtn = event.target.closest(".doc-item-delete");
+    const item = event.target.closest(".doc-list-item");
+    if (!item) {
+        return;
+    }
+
+    const documentId = item.dataset.id;
+
+    if (deleteBtn) {
+        event.stopPropagation();
+        try {
+            await fetch(`/api/documents/${documentId}`, { method: "DELETE" });
+        } catch (error) {
+            showError("Could not delete that document. Please try again.");
+        }
+        if (documentId === currentDocumentId) {
+            showWelcomeState();
+        }
+        if (documentId === selectedLibraryDocumentId) {
+            selectedLibraryDocumentId = null;
+        }
+        loadDocumentLibrary();
+        return;
+    }
+
+    selectLibraryDocument(documentId);
+});
+
 function showWelcomeState() {
     documentView.classList.add("d-none");
-    extractedTextView.classList.add("d-none");
     welcomeState.classList.remove("d-none");
     form.reset();
     selectedFileName.textContent = "";
     currentDocumentId = null;
-    extractedTextContent.textContent = "";
-    extractedTextEmpty.classList.add("d-none");
+    previewImage.src = "";
+    previewImage.classList.remove("d-none");
+    previewImageError.classList.add("d-none");
+    setExtractedTextState("pending");
     docUploadDate.textContent = "";
     docLanguage.textContent = "";
     clearError();
+    highlightActiveDocument(null);
 }
 
 form.addEventListener("submit", async (event) => {
@@ -96,20 +261,8 @@ form.addEventListener("submit", async (event) => {
             return;
         }
 
-        previewImage.src = URL.createObjectURL(file);
-        docFilename.textContent = data.original_filename;
-        docFiletype.textContent = data.content_type;
-        docStatus.textContent = data.status;
-        currentDocumentId = data.document_id;
-        renderMetadata(data.metadata);
-
-        extractedTextView.classList.add("d-none");
-        extractedTextContent.textContent = "";
-        extractedTextError.classList.add("d-none");
-        extractedTextEmpty.classList.add("d-none");
-
-        welcomeState.classList.add("d-none");
-        documentView.classList.remove("d-none");
+        await loadDocumentLibrary();
+        await selectLibraryDocument(data.document_id);
     } catch (error) {
         showError("Something went wrong. Please try again.");
     }
@@ -120,11 +273,7 @@ extractTextBtn.addEventListener("click", async () => {
         return;
     }
 
-    extractedTextView.classList.remove("d-none");
-    extractedTextError.classList.add("d-none");
-    extractedTextEmpty.classList.add("d-none");
-    extractedTextContent.textContent = "";
-    extractedTextLoading.classList.remove("d-none");
+    setExtractedTextState("loading");
     extractTextBtn.disabled = true;
 
     try {
@@ -135,26 +284,23 @@ extractTextBtn.addEventListener("click", async () => {
         const data = await response.json();
 
         if (!response.ok) {
-            extractedTextError.textContent = data.detail || "Could not extract text from this document.";
-            extractedTextError.classList.remove("d-none");
+            setExtractedTextState("error", { message: data.detail || "Could not extract text from this document." });
             return;
         }
 
         if (data.status === "success") {
-            extractedTextContent.textContent = data.extracted_text;
+            setExtractedTextState("content", { text: data.extracted_text });
         } else if (data.status === "empty") {
-            extractedTextEmpty.classList.remove("d-none");
+            setExtractedTextState("empty");
         } else {
-            extractedTextError.textContent = data.error || "Could not extract text from this document.";
-            extractedTextError.classList.remove("d-none");
+            setExtractedTextState("error", { message: data.error || "Could not extract text from this document." });
         }
 
         renderMetadata(data.metadata);
+        loadDocumentLibrary();
     } catch (error) {
-        extractedTextError.textContent = "Something went wrong while extracting text. Please try again.";
-        extractedTextError.classList.remove("d-none");
+        setExtractedTextState("error", { message: "Something went wrong while extracting text. Please try again." });
     } finally {
-        extractedTextLoading.classList.add("d-none");
         extractTextBtn.disabled = false;
     }
 });
@@ -167,3 +313,5 @@ if (sidebarToggle) {
         sidebar.classList.toggle("open");
     });
 }
+
+loadDocumentLibrary();
