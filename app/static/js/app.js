@@ -28,7 +28,12 @@ const extractedTextContent = document.getElementById("extracted-text-content");
 const docList = document.getElementById("doc-list");
 const docListEmpty = document.getElementById("doc-list-empty");
 
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const chatSendBtn = document.getElementById("chat-send-btn");
+
 let currentDocumentId = null;
+let currentExtractedText = null;
 let selectedLibraryDocumentId = null;
 
 imageInput.addEventListener("change", () => {
@@ -90,6 +95,89 @@ function setExtractedTextState(state, options = {}) {
     }
 }
 
+function updateChatAvailability() {
+    const ready = Boolean(currentDocumentId && currentExtractedText && currentExtractedText.trim() !== "");
+    chatInput.disabled = !ready;
+    chatSendBtn.disabled = !ready;
+    chatInput.placeholder = ready
+        ? "Ask anything about your document..."
+        : "Select a processed document to ask questions...";
+}
+
+function resetChatMessages() {
+    const placeholderText = currentDocumentId
+        ? "Ask a question about this document."
+        : "Select or upload a document, then ask a question about it.";
+    chatMessages.innerHTML = `<div class="chat-placeholder" id="chat-placeholder">${placeholderText}</div>`;
+}
+
+function appendChatMessage(role, text) {
+    const placeholder = chatMessages.querySelector(".chat-placeholder");
+    if (placeholder) {
+        placeholder.remove();
+    }
+
+    const message = document.createElement("div");
+    message.className = `chat-message chat-message-${role}`;
+    message.innerHTML = `
+        <div class="chat-message-sender">${role === "user" ? "You" : "UrduDoc AI"}</div>
+        <div class="chat-message-bubble" dir="auto"></div>
+    `;
+    message.querySelector(".chat-message-bubble").textContent = text;
+
+    chatMessages.appendChild(message);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return message;
+}
+
+async function sendChatQuestion() {
+    const question = chatInput.value.trim();
+    if (!question || !currentDocumentId) {
+        return;
+    }
+
+    appendChatMessage("user", question);
+    chatInput.value = "";
+    chatInput.disabled = true;
+    chatSendBtn.disabled = true;
+
+    const loadingMessage = appendChatMessage("assistant", "Thinking...");
+    loadingMessage.classList.add("chat-message-loading");
+
+    try {
+        const response = await fetch(`/api/documents/${currentDocumentId}/ask`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+        });
+
+        const data = await response.json();
+
+        loadingMessage.remove();
+
+        if (!response.ok) {
+            appendChatMessage("assistant", data.detail || "Something went wrong. Please try again.");
+        } else if (data.status === "success") {
+            appendChatMessage("assistant", data.answer);
+        } else {
+            appendChatMessage("assistant", data.error || "Could not answer that question. Please try again.");
+        }
+    } catch (error) {
+        loadingMessage.remove();
+        appendChatMessage("assistant", "Something went wrong. Please try again.");
+    } finally {
+        updateChatAvailability();
+    }
+}
+
+chatSendBtn.addEventListener("click", sendChatQuestion);
+chatInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        sendChatQuestion();
+    }
+});
+
 function highlightActiveDocument(documentId) {
     selectedLibraryDocumentId = documentId;
     const items = docList.querySelectorAll(".doc-list-item");
@@ -113,6 +201,8 @@ function renderDocumentDetail(detail) {
     previewImage.classList.remove("d-none");
     previewImage.src = detail.image_url ? `${detail.image_url}?t=${Date.now()}` : "";
 
+    currentExtractedText = detail.extracted_text || null;
+
     if (detail.processing_status === "completed" && detail.extracted_text) {
         setExtractedTextState("content", { text: detail.extracted_text });
     } else if (detail.processing_status === "completed") {
@@ -127,6 +217,8 @@ function renderDocumentDetail(detail) {
     welcomeState.classList.add("d-none");
     documentView.classList.remove("d-none");
     highlightActiveDocument(detail.document_id);
+    resetChatMessages();
+    updateChatAvailability();
 }
 
 async function selectLibraryDocument(documentId) {
@@ -225,6 +317,7 @@ function showWelcomeState() {
     form.reset();
     selectedFileName.textContent = "";
     currentDocumentId = null;
+    currentExtractedText = null;
     previewImage.src = "";
     previewImage.classList.remove("d-none");
     previewImageError.classList.add("d-none");
@@ -233,6 +326,8 @@ function showWelcomeState() {
     docLanguage.textContent = "";
     clearError();
     highlightActiveDocument(null);
+    resetChatMessages();
+    updateChatAvailability();
 }
 
 form.addEventListener("submit", async (event) => {
@@ -290,14 +385,18 @@ extractTextBtn.addEventListener("click", async () => {
 
         if (data.status === "success") {
             setExtractedTextState("content", { text: data.extracted_text });
+            currentExtractedText = data.extracted_text;
         } else if (data.status === "empty") {
             setExtractedTextState("empty");
+            currentExtractedText = null;
         } else {
             setExtractedTextState("error", { message: data.error || "Could not extract text from this document." });
+            currentExtractedText = null;
         }
 
         renderMetadata(data.metadata);
         loadDocumentLibrary();
+        updateChatAvailability();
     } catch (error) {
         setExtractedTextState("error", { message: "Something went wrong while extracting text. Please try again." });
     } finally {
@@ -315,3 +414,5 @@ if (sidebarToggle) {
 }
 
 loadDocumentLibrary();
+resetChatMessages();
+updateChatAvailability();

@@ -1,10 +1,13 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
 import os
 import uuid
 
 from app.services import groq_service
 from app.services import text_cleaning_service
 from app.services import storage_service
+from app.services import qa_service
 
 router = APIRouter()
 
@@ -84,6 +87,43 @@ async def list_documents():
     ]
 
 
+@router.get("/api/documents/{document_id}")
+async def get_document(document_id: str):
+    if not _is_valid_document_id(document_id):
+        raise HTTPException(status_code=400, detail="Invalid document id.")
+
+    record = storage_service.get_document(document_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Document not found.")
+
+    return {
+        "document_id": record.get("document_id"),
+        "filename": record.get("original_filename"),
+        "file_type": record.get("file_type"),
+        "language": record.get("language"),
+        "processing_status": record.get("processing_status"),
+        "upload_timestamp": record.get("upload_timestamp"),
+        "extracted_text": record.get("extracted_text"),
+        "image_url": f"/api/documents/{document_id}/image",
+    }
+
+
+@router.get("/api/documents/{document_id}/image")
+async def get_document_image(document_id: str):
+    if not _is_valid_document_id(document_id):
+        raise HTTPException(status_code=400, detail="Invalid document id.")
+
+    record = storage_service.get_document(document_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Document not found.")
+
+    image_path = record.get("file_path")
+    if not image_path or not os.path.isfile(image_path):
+        raise HTTPException(status_code=404, detail="Image not found.")
+
+    return FileResponse(image_path, media_type=record.get("file_type"))
+
+
 @router.post("/api/documents/{document_id}/ocr")
 async def ocr_document(document_id: str):
     if not _is_valid_document_id(document_id):
@@ -138,6 +178,44 @@ async def ocr_document(document_id: str):
         "extracted_text": extracted_text,
         "error": error,
         "metadata": _public_view(record),
+    }
+
+
+class AskRequest(BaseModel):
+    question: str
+
+
+@router.post("/api/documents/{document_id}/ask")
+async def ask_document(document_id: str, payload: AskRequest):
+    if not _is_valid_document_id(document_id):
+        raise HTTPException(status_code=400, detail="Invalid document id.")
+
+    question = (payload.question or "").strip()
+    if not question:
+        raise HTTPException(status_code=400, detail="Question cannot be empty.")
+
+    record = storage_service.get_document(document_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Document not found.")
+
+    document_text = record.get("extracted_text")
+    if not document_text or not document_text.strip():
+        return {
+            "document_id": document_id,
+            "question": question,
+            "answer": None,
+            "status": "failed",
+            "error": "This document has no extracted text yet. Run Extract text first.",
+        }
+
+    result = qa_service.ask_question(document_text, question)
+
+    return {
+        "document_id": document_id,
+        "question": question,
+        "answer": result.get("answer"),
+        "status": result.get("status", "failed"),
+        "error": result.get("error"),
     }
 
 

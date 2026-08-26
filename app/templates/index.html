@@ -64,10 +64,7 @@
                     </section>
 
                     <section class="document-view d-none" id="document-view">
-                        <div class="document-card">
-                            <div class="document-preview">
-                                <img id="preview-image" src="" alt="Uploaded document preview">
-                            </div>
+                        <div class="document-card document-header-card">
                             <div class="document-meta">
                                 <div class="document-meta-row">
                                     <span class="meta-label">File name</span>
@@ -96,21 +93,33 @@
                                 </button>
                             </div>
                         </div>
-                    </section>
 
-                    <section class="extracted-text-view d-none" id="extracted-text-view">
-                        <div class="document-card">
-                            <div class="chat-header">
-                                <i class="bi bi-file-text"></i> Extracted Text
+                        <div class="document-columns">
+                            <div class="document-card document-image-card">
+                                <div class="document-preview">
+                                    <img id="preview-image" src="" alt="Uploaded document preview">
+                                    <div id="preview-image-error" class="preview-image-error d-none">
+                                        <i class="bi bi-image"></i> Image unavailable.
+                                    </div>
+                                </div>
                             </div>
-                            <div id="extracted-text-loading" class="extracted-text-loading d-none">
-                                <span class="spinner"></span> Reading document with Groq Vision...
+
+                            <div class="document-card document-text-card" id="extracted-text-view">
+                                <div class="chat-header">
+                                    <i class="bi bi-file-text"></i> Extracted Text
+                                </div>
+                                <div id="extracted-text-loading" class="extracted-text-loading d-none">
+                                    <span class="spinner"></span> Reading document with Groq Vision...
+                                </div>
+                                <div id="extracted-text-error" class="upload-error d-none"></div>
+                                <div id="extracted-text-empty" class="extracted-text-empty d-none">
+                                    <i class="bi bi-file-earmark-x"></i> No text was detected in this document.
+                                </div>
+                                <div id="extracted-text-pending" class="extracted-text-empty d-none">
+                                    <i class="bi bi-file-earmark-text"></i> Not processed yet. Click Extract text to read this document.
+                                </div>
+                                <pre id="extracted-text-content" class="extracted-text-content" dir="auto"></pre>
                             </div>
-                            <div id="extracted-text-error" class="upload-error d-none"></div>
-                            <div id="extracted-text-empty" class="extracted-text-empty d-none">
-                                <i class="bi bi-file-earmark-x"></i> No text was detected in this document.
-                            </div>
-                            <pre id="extracted-text-content" class="extracted-text-content" dir="auto"></pre>
                         </div>
                     </section>
 
@@ -118,9 +127,9 @@
                         <div class="chat-header">
                             <i class="bi bi-chat-dots"></i> Conversation
                         </div>
-                        <div class="chat-messages">
-                            <div class="chat-placeholder">
-                                Chatting with your document is coming in a future update.
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="chat-placeholder" id="chat-placeholder">
+                                Select or upload a document, then ask a question about it.
                             </div>
                         </div>
                     </section>
@@ -132,8 +141,8 @@
             <button class="icon-btn" id="attach-btn" type="button" title="Upload a document">
                 <i class="bi bi-paperclip"></i>
             </button>
-            <input type="text" class="chat-input" placeholder="Ask anything about your document..." disabled>
-            <button class="icon-btn send-btn" type="button" disabled title="Chat coming soon">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Select a processed document to ask questions..." disabled>
+            <button class="icon-btn send-btn" id="chat-send-btn" type="button" disabled title="Ask a question">
                 <i class="bi bi-send"></i>
             </button>
         </div>
