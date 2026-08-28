@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from typing import Optional, List
 import os
 import uuid
 
@@ -181,8 +182,15 @@ async def ocr_document(document_id: str):
     }
 
 
+class ConversationMessage(BaseModel):
+    role: str
+    content: str
+    timestamp: Optional[str] = None
+
+
 class AskRequest(BaseModel):
     question: str
+    history: List[ConversationMessage] = []
 
 
 @router.post("/api/documents/{document_id}/ask")
@@ -208,7 +216,8 @@ async def ask_document(document_id: str, payload: AskRequest):
             "error": "This document has no extracted text yet. Run Extract text first.",
         }
 
-    result = qa_service.ask_question(document_text, question)
+    history = [message.model_dump() for message in payload.history]
+    result = qa_service.ask_question(document_text, question, history=history)
 
     return {
         "document_id": document_id,

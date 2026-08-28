@@ -35,6 +35,7 @@ const chatSendBtn = document.getElementById("chat-send-btn");
 let currentDocumentId = null;
 let currentExtractedText = null;
 let selectedLibraryDocumentId = null;
+let conversationHistory = [];
 
 imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
@@ -105,6 +106,7 @@ function updateChatAvailability() {
 }
 
 function resetChatMessages() {
+    conversationHistory = [];
     const placeholderText = currentDocumentId
         ? "Ask a question about this document."
         : "Select or upload a document, then ask a question about it.";
@@ -148,7 +150,7 @@ async function sendChatQuestion() {
         const response = await fetch(`/api/documents/${currentDocumentId}/ask`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question }),
+            body: JSON.stringify({ question, history: conversationHistory }),
         });
 
         const data = await response.json();
@@ -159,6 +161,8 @@ async function sendChatQuestion() {
             appendChatMessage("assistant", data.detail || "Something went wrong. Please try again.");
         } else if (data.status === "success") {
             appendChatMessage("assistant", data.answer);
+            conversationHistory.push({ role: "user", content: question, timestamp: new Date().toISOString() });
+            conversationHistory.push({ role: "assistant", content: data.answer, timestamp: new Date().toISOString() });
         } else {
             appendChatMessage("assistant", data.error || "Could not answer that question. Please try again.");
         }

@@ -75,7 +75,9 @@ def extract_text_from_image(image_path: str) -> dict:
                 }
             ],
             temperature=0.2,
-            max_completion_tokens=2048,
+            max_completion_tokens=4096,
+            reasoning_format="hidden",
+            reasoning_effort="none",
         )
     except APITimeoutError:
         return {"status": "failed", "extracted_text": None, "error": "The request to Groq timed out. Please try again."}
