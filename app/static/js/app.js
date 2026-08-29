@@ -35,7 +35,6 @@ const chatSendBtn = document.getElementById("chat-send-btn");
 let currentDocumentId = null;
 let currentExtractedText = null;
 let selectedLibraryDocumentId = null;
-let conversationHistory = [];
 
 imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
@@ -106,11 +105,28 @@ function updateChatAvailability() {
 }
 
 function resetChatMessages() {
-    conversationHistory = [];
     const placeholderText = currentDocumentId
         ? "Ask a question about this document."
         : "Select or upload a document, then ask a question about it.";
     chatMessages.innerHTML = `<div class="chat-placeholder" id="chat-placeholder">${placeholderText}</div>`;
+}
+
+async function loadConversation(documentId) {
+    resetChatMessages();
+    try {
+        const response = await fetch(`/api/documents/${documentId}/conversation`);
+        if (!response.ok) {
+            return;
+        }
+        const data = await response.json();
+        if (data.messages && data.messages.length) {
+            data.messages.forEach((message) => {
+                appendChatMessage(message.role, message.content);
+            });
+        }
+    } catch (error) {
+        // Keep the placeholder if the conversation can't be loaded.
+    }
 }
 
 function appendChatMessage(role, text) {
@@ -150,7 +166,7 @@ async function sendChatQuestion() {
         const response = await fetch(`/api/documents/${currentDocumentId}/ask`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question, history: conversationHistory }),
+            body: JSON.stringify({ question }),
         });
 
         const data = await response.json();
@@ -161,8 +177,6 @@ async function sendChatQuestion() {
             appendChatMessage("assistant", data.detail || "Something went wrong. Please try again.");
         } else if (data.status === "success") {
             appendChatMessage("assistant", data.answer);
-            conversationHistory.push({ role: "user", content: question, timestamp: new Date().toISOString() });
-            conversationHistory.push({ role: "assistant", content: data.answer, timestamp: new Date().toISOString() });
         } else {
             appendChatMessage("assistant", data.error || "Could not answer that question. Please try again.");
         }
@@ -221,7 +235,7 @@ function renderDocumentDetail(detail) {
     welcomeState.classList.add("d-none");
     documentView.classList.remove("d-none");
     highlightActiveDocument(detail.document_id);
-    resetChatMessages();
+    loadConversation(detail.document_id);
     updateChatAvailability();
 }
 

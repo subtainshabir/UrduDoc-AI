@@ -1,7 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from typing import Optional, List
 import os
 import uuid
 
@@ -9,6 +8,7 @@ from app.services import groq_service
 from app.services import text_cleaning_service
 from app.services import storage_service
 from app.services import qa_service
+from app.services import conversation_service
 
 router = APIRouter()
 
@@ -182,15 +182,8 @@ async def ocr_document(document_id: str):
     }
 
 
-class ConversationMessage(BaseModel):
-    role: str
-    content: str
-    timestamp: Optional[str] = None
-
-
 class AskRequest(BaseModel):
     question: str
-    history: List[ConversationMessage] = []
 
 
 @router.post("/api/documents/{document_id}/ask")
@@ -216,8 +209,16 @@ async def ask_document(document_id: str, payload: AskRequest):
             "error": "This document has no extracted text yet. Run Extract text first.",
         }
 
-    history = [message.model_dump() for message in payload.history]
-    result = qa_service.ask_question(document_text, question, history=history)
+    conversation = conversation_service.get_conversation(document_id)
+    prior_messages = conversation.get("messages", []) if conversation else []
+
+    result = qa_service.ask_question(document_text, question, history=prior_messages)
+
+    if result.get("status") == "success":
+        conversation_service.append_messages(document_id, [
+            {"role": "user", "content": question},
+            {"role": "assistant", "content": result.get("answer")},
+        ])
 
     return {
         "document_id": document_id,
@@ -225,6 +226,26 @@ async def ask_document(document_id: str, payload: AskRequest):
         "answer": result.get("answer"),
         "status": result.get("status", "failed"),
         "error": result.get("error"),
+    }
+
+
+@router.get("/api/documents/{document_id}/conversation")
+async def get_document_conversation(document_id: str):
+    if not _is_valid_document_id(document_id):
+        raise HTTPException(status_code=400, detail="Invalid document id.")
+
+    record = storage_service.get_document(document_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Document not found.")
+
+    conversation = conversation_service.get_conversation(document_id)
+    if not conversation:
+        return {"document_id": document_id, "conversation_id": None, "messages": []}
+
+    return {
+        "document_id": document_id,
+        "conversation_id": conversation.get("conversation_id"),
+        "messages": conversation.get("messages", []),
     }
 
 
@@ -253,5 +274,6 @@ async def delete_document(document_id: str):
                 pass
 
     storage_service.delete_document(document_id)
+    conversation_service.delete_conversation(document_id)
 
     return {"document_id": document_id, "status": "deleted"}

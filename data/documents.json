@@ -1,46 +1,46 @@
 {
-  "97cceadd59f344829e6d0bff08d43d4c.png": {
-    "document_id": "97cceadd59f344829e6d0bff08d43d4c.png",
-    "original_filename": "balanced_class_distribution.png",
-    "file_type": "image/png",
-    "file_size": 320600,
-    "file_path": "D:\\UrduDoc AI\\uploads\\97cceadd59f344829e6d0bff08d43d4c.png",
-    "extracted_text": "<think>\nThe user wants me to transcribe the text from the provided image.\n\n1. **Analyze the image:** The image is a pie chart showing a \"Balanced Class Distribution\". It has four quadrants, each representing 25.0% of the total.\n2. **Identify text elements:**\n* Top title: \"Balanced Class Distribution\"\n* Top-left quadrant label: \"Normal Fundus\"\n* Top-left quadrant percentage: \"25.0%\"\n* Top-right quadrant label: \"Moderate DR\"\n* Top-right quadrant percentage: \"25.0%\"\n* Bottom-left quadrant label: \"Dry AMD\"\n* Bottom-left quadrant percentage: \"25.0%\"\n* Bottom-right quadrant label: \"Wet AMD\"\n* Bottom-right quadrant percentage: \"25.0%\"\n* There is a second, zoomed-in view of the chart below the main one.\n* Zoomed-in title fragment: \"Balanced Clas\" (cut off)\n* Zoomed-in label: \"Normal Fundus\"\n* Zoomed-in percentage: \"25.0%\"\n* Zoomed-in title fragment: \"ss Distribution\" (cut off)\n* Zoomed-in label: \"Moderate DR\"\n* Zoomed-in percentage: \"25.0%\"\n* Zoomed-in label: \"Dry AMD\"\n* Zoomed-in percentage: \"25.0%\"\n* Zoomed-in label: \"Wet AMD\"\n* Zoomed-in percentage: \"25.0%\"\n\n3. **Transcribe the text:** I will transcribe the text exactly as it appears, maintaining the layout as best as possible. I will include the text from the zoomed-in sections as well, as they are part of the image content.\n\n* Line 1: Balanced Class Distribution\n* Line 2: Normal Fundus\n* Line 3: 25.0%\n* Line 4: Moderate DR\n* Line 5: 25.0%\n* Line 6: 25.0%\n* Line 7: 25.0%\n* Line 8: Dry AMD\n* Line 9: Wet AMD\n* Line 10: Balanced Clas\n* Line 11: Normal Fundus\n* Line 12: 25.0%\n* Line 13: ss Distribution\n* Line 14: Moderate DR\n* Line 15: 25.0%\n* Line 16: 25.0%\n* Line 17: Dry AMD\n* Line 18: 25.0%\n* Line 19: Wet AMD\n\nWait, looking closer at the bottom part, it seems to be a sequence of cropped images showing parts of the chart.\n- First crop: Top part of the chart. \"Balanced Clas\", \"Normal Fundus\", \"25.0%\".\n- Second crop: Top right part. \"ss Distribution\", \"Moderate DR\", \"25.0%\".\n- Third crop: Bottom left part. \"25.0%\", \"Dry AMD\".\n- Fourth crop: Bottom right part. \"25.0%\", \"Wet AMD\".\n\nLet's re-read the full image as a single stream of text from top to bottom.\n\n**Top Chart:**\nBalanced Class Distribution\nNormal Fundus\n25.0%\nModerate DR\n25.0%\n25.0%\n25.0%\nDry AMD\nWet AMD\n\n**Bottom Section (Zoomed crops):**\nBalanced Clas\nNormal Fundus\n25.0%\nss Distribution\nModerate DR\n25.0%\n25.0%\nDry AMD\n25.0%\nWet AMD\n\nI will combine these into a single transcription block.\n\nTranscription:\nBalanced Class Distribution\nNormal Fundus\n25.0%\nModerate DR\n25.0%\n25.0%\n25.0%\nDry AMD\nWet AMD\nBalanced Clas\nNormal Fundus\n25.0%\nss Distribution\nModerate DR\n25.0%\n25.0%\nDry AMD\n25.0%\nWet AMD\n</think>\n\nBalanced Class Distribution\nNormal Fundus\n25.0%\nModerate DR\n25.0%\n25.0%\n25.0%\nDry AMD\nWet AMD\nBalanced Clas\nNormal Fundus\n25.0%\nss Distribution\nModerate DR\n25.0%\n25.0%\nDry AMD\n25.0%\nWet AMD",
-    "language": "english",
-    "processing_status": "completed",
-    "upload_timestamp": "2026-08-26T23:58:42.369480+00:00"
-  },
-  "2437bc56de8945b1a9ffd620a5fc8238.jpg": {
-    "document_id": "2437bc56de8945b1a9ffd620a5fc8238.jpg",
-    "original_filename": "1855bf73a755680d85893de7228236d1 (1).jpg",
+  "8e6b4275b24b4e33958a233b1fc636d0.jpg": {
+    "document_id": "8e6b4275b24b4e33958a233b1fc636d0.jpg",
+    "original_filename": "images (1).jfif",
     "file_type": "image/jpeg",
-    "file_size": 58137,
-    "file_path": "D:\\UrduDoc AI\\uploads\\2437bc56de8945b1a9ffd620a5fc8238.jpg",
-    "extracted_text": "<think>\nThe user wants me to transcribe the Urdu text from the image.\n\n1. **Analyze the image:** The image contains a handwritten poem in Urdu. It's divided into stanzas. I need to read it line by line.\n\n2. **Transcription - Line by Line:**\n\n* **Line 1:** وہ اجنبی تھا شناختھا، تجھکو یاد نہیں\n* **Line 2:** وہ درد تھا، یا مداوا تھا، تجھکو یاد نہیں\n* **Line 3:** انا کے توڑ میں لپیٹی تھی زندگی اس کی\n* **Line 4:** وہ تودہ پرست تھا، شیدا تھا، تجھکو یاد نہیں\n* **Line 5:** کسی کے قریب کی خواہش بھی ناتمام رہی\n* **Line 6:** کوئی سمجھتا کہ سائے تھا، تجھکو یاد نہیں\n* **Line 7:** لیس آلیب بارِ بیکار تھا اس نے محمل میں\n* **Line 8:** وہ دِبرِ تھی، شناختھا، تجھکو یاد نہیں\n* **Line 9:** پہلے لٹتی برف کی ماں تھی زندگی گھدری\n* **Line 10:** اُکباں پر ڈھوپ تھی، بے یقینا تجھکو یاد نہیں\n* **Signature:** سہیل\n\n3. **Refining the Transcription:**\n* Line 1: \"وہ اجنبی تھا شناختھا، تجھکو یاد نہیں\" - Looks correct.\n* Line 2: \"وہ درد تھا، یا مداوا تھا، تجھکو یاد نہیں\" - Looks correct.\n* Line 3: \"انا کے توڑ میں لپیٹی تھی زندگی اس کی\" - Looks correct.\n* Line 4: \"وہ تودہ پرست تھا، شیدا تھا، تجھکو یاد نہیں\" - Looks correct.\n* Line 5: \"کسی کے قریب کی خواہش بھی ناتمام رہی\" - Looks correct.\n* Line 6: \"کوئی سمجھتا کہ سائے تھا، تجھکو یاد نہیں\" - Looks correct.\n* Line 7: \"لیس آلیب بارِ بیکار تھا اس نے محمل میں\" - Looks correct.\n* Line 8: \"وہ دِبرِ تھی، شناختھا، تجھکو یاد نہیں\" - Looks correct.\n* Line 9: \"پہلے لٹتی برف کی ماں تھی زندگی گھدری\" - Looks correct.\n* Line 10: \"اُکباں پر ڈھوپ تھی، بے یقینا تجھکو یاد نہیں\" - Looks correct.\n* Signature: \"سہیل\" - Looks correct.\n\n4. **Final Formatting:** Present the text exactly as transcribed.\n\nوہ اجنبی تھا شناختھا، تجھکو یاد نہیں\nوہ درد تھا، یا مداوا تھا، تجھکو یاد نہیں\nانا کے توڑ میں لپیٹی تھی زندگی اس کی\nوہ تودہ پرست تھا، شیدا تھا، تجھکو یاد نہیں\nکسی کے قریب کی خواہش بھی ناتمام رہی\nکوئی سمجھتا کہ سائے تھا، تجھکو یاد نہیں\nلیس آلیب بارِ بیکار تھا اس نے محمل میں\nوہ دِبرِ تھی، شناختھا، تجھکو یاد نہیں\nپہلے لٹتی برف کی ماں تھی زندگی گھدری\nاُکباں پر ڈھوپ تھی، بے یقینا تجھکو یاد نہیں\nسہیل\n</think>\n\nوہ اجنبی تھا شناختھا، تجھکو یاد نہیں\nوہ درد تھا، یا مداوا تھا، تجھکو یاد نہیں\nانا کے توڑ میں لپیٹی تھی زندگی اس کی\nوہ تودہ پرست تھا، شیدا تھا، تجھکو یاد نہیں\nکسی کے قریب کی خواہش بھی ناتمام رہی\nکوئی سمجھتا کہ سائے تھا، تجھکو یاد نہیں\nلیس آلیب بارِ بیکار تھا اس نے محمل میں\nوہ دِبرِ تھی، شناختھا، تجھکو یاد نہیں\nپہلے لٹتی برف کی ماں تھی زندگی گھدری\nاُکباں پر ڈھوپ تھی، بے یقینا تجھکو یاد نہیں\nسہیل",
-    "language": "mixed",
-    "processing_status": "completed",
-    "upload_timestamp": "2026-08-28T11:06:55.692238+00:00"
-  },
-  "9d67a7c867ae42dfb64038bae7fdffa1.jpg": {
-    "document_id": "9d67a7c867ae42dfb64038bae7fdffa1.jpg",
-    "original_filename": "1855bf73a755680d85893de7228236d1 (1).jpg",
-    "file_type": "image/jpeg",
-    "file_size": 58137,
-    "file_path": "D:\\UrduDoc AI\\uploads\\9d67a7c867ae42dfb64038bae7fdffa1.jpg",
-    "extracted_text": "<think>\nThe user wants the text from the image transcribed exactly. I will transcribe the Urdu text visible in the image, preserving the line breaks and structure.\n\n1. **Transcribe the main block of text:**\n* Line 1: | وہ اجنبی تھا شناس تھا تجھ کو یاد نہیں\n* Line 2: | وہ درد تھا یا مداوا تھا تجھ کو یاد نہیں\n* Line 3: | انا کے تو ل میں پٹی تھی زندگی اس کی\n* Line 4: | وہ تودیرست تھا متھا تھا تجھ کو یاد نہیں\n* Line 5: کسی کے قریب کی خواہش ہی نامام رہی\n* Line 6: | کوئی سمجھتا کہ سائب تھا تجھ کو یاد نہیں\n* Line 7: | لیس آلیہ بار یہا ر تھا اس نے محل میں\n* Line 8: | وہ دیرک تھی تماشا تھا تجھ کو یاد نہیں\n* Line 9: | پہلے ہی برفی ما نڈر زندگی گھڑی\n* Line 10: | کہاں پہنچ ہو پٹی بیٹھا تجھ کو یاد نہیں\n* Signature: سہیر\n\n2. **Transcribe the cropped sections (which are just zoomed-in parts of the main text):**\n* Crop 1:\n* نا تھا تجھ کو یاد نہیں\n* ا تھا تجھ کو یاد نہیں\n* تھی زندگی اس کی\n* یا تھا تجھ کو یاد نہیں\n* Crop 2:\n* وہ اجنبی تھا شناس\n* وہ درد تھا یا مداو\n* انا کے تو ل میں پٹی\n* وہ تودیرست تھا\n* Crop 3:\n* اس کی خواہش ہی نامام رہی\n* تھا تجھ کو یاد نہیں\n* اس نے محل میں\n* تجھ کو یاد نہیں\n* Crop 4:\n* کسی کے قریب کی تو\n* کوئی سمجھتا کہ سای\n* Crop 5:\n* لیس آلیہ بار یہا ر تھا\n* وہ دیرک تھی تماشا ت\n* پہلے ہی برفی ما نڈر\n* Crop 6:\n* زندگی گھڑی\n* بیٹھا تجھ کو یاد نہیں\n* سہیر\n* Crop 7:\n* کہاں پہنچ ہو پٹی\n\n3. **Combine and format:** I will output the full text first, as the crops are just repetitions. The prompt asks to transcribe the text. I will transcribe the full poem as it appears in the first image, which contains the complete text.\n\n* Line 1: | وہ اجنبی تھا شناس تھا تجھ کو یاد نہیں\n* Line 2: | وہ درد تھا یا مداوا تھا تجھ کو یاد نہیں\n* Line 3: | انا کے تو ل میں پٹی تھی زندگی اس کی\n* Line 4: | وہ تودیرست تھا متھا تھا تجھ کو یاد نہیں\n* Line 5: کسی کے قریب کی خواہش ہی نامام رہی\n* Line 6: | کوئی سمجھتا کہ سائب تھا تجھ کو یاد نہیں\n* Line 7: | لیس آلیہ بار یہا ر تھا اس نے محل میں\n* Line 8: | وہ دیرک تھی تماشا تھا تجھ کو یاد نہیں\n* Line 9: | پہلے ہی برفی ما نڈر زندگی گھڑی\n* Line 10: | کہاں پہنچ ہو پٹی بیٹھا تجھ کو یاد نہیں\n* Signature: سہیر\n\nWait, looking closer at line 4, it says \"وہ تودیرست تھا متھا تھا\". Actually, looking at the image, it looks like \"وہ تودیرست تھا متھا تھا\". Let me re-read carefully.\nLine 4: \"وہ تودیرست تھا متھا تھا\" -> \"وہ تودیرست تھا متھا تھا\" seems correct based on the visual.\nLine 5: \"کسی کے قریب کی خواہش ہی نامام رہی\" -> \"کسی کے قریب کی خواہش ہی نامام رہی\"\nLine 6: \"کوئی سمجھتا کہ سائب تھا\" -> \"کوئی سمجھتا کہ سائب تھا\"\nLine 7: \"لیس آلیہ بار یہا ر تھا\" -> \"لیس آلیہ بار یہا ر تھا\"\nLine 9: \"پہلے ہی برفی ما نڈر زندگی گھڑی\" -> \"پہلے ہی برفی ما نڈر زندگی گھڑی\"\nLine 10: \"کہاں پہنچ ہو پٹی بیٹھا\" -> \"کہاں پہنچ ہو پٹی بیٹھا\"\n\nLet's refine the transcription to be as accurate as possible to the visual text.\n\n| وہ اجنبی تھا شناس تھا تجھ کو یاد نہیں\n| وہ درد تھا یا مداوا تھا تجھ کو یاد نہیں\n| انا کے تو ل میں پٹی تھی زندگی اس کی\n| وہ تودیرست تھا متھا تھا تجھ کو یاد نہیں\nکسی کے قریب کی خواہش ہی نامام رہی\n| کوئی سمجھتا کہ سائب تھا تجھ کو یاد نہیں\n| لیس آلیہ بار یہا ر تھا اس نے محل میں\n| وہ دیرک تھی تماشا تھا تجھ کو یاد نہیں\n| پہلے ہی برفی ما نڈر زندگی گھڑی\n| کہاں پہنچ ہو پٹی بیٹھا تجھ کو یاد نہیں\nسہیر\n</think>\n\n| وہ اجنبی تھا شناس تھا تجھ کو یاد نہیں\n| وہ درد تھا یا مداوا تھا تجھ کو یاد نہیں\n| انا کے تو ل میں پٹی تھی زندگی اس کی\n| وہ تودیرست تھا متھا تھا تجھ کو یاد نہیں\nکسی کے قریب کی خواہش ہی نامام رہی\n| کوئی سمجھتا کہ سائب تھا تجھ کو یاد نہیں\n| لیس آلیہ بار یہا ر تھا اس نے محل میں\n| وہ دیرک تھی تماشا تھا تجھ کو یاد نہیں\n| پہلے ہی برفی ما نڈر زندگی گھڑی\n| کہاں پہنچ ہو پٹی بیٹھا تجھ کو یاد نہیں\nسہیر",
-    "language": "mixed",
-    "processing_status": "completed",
-    "upload_timestamp": "2026-08-28T11:13:47.630897+00:00"
-  },
-  "3456d509752e41b7bec594e8ce1c5339.jpg": {
-    "document_id": "3456d509752e41b7bec594e8ce1c5339.jpg",
-    "original_filename": "1855bf73a755680d85893de7228236d1 (1).jpg",
-    "file_type": "image/jpeg",
-    "file_size": 58137,
-    "file_path": "D:\\UrduDoc AI\\uploads\\3456d509752e41b7bec594e8ce1c5339.jpg",
-    "extracted_text": "وہ اجنبی تھا شناختا تھا، تجھکو یاد نہیں\nاوہ درد تھا، یا مداوا تھا، تجھکو یاد نہیں\nانتا کے توڑ میں لپیٹی تھی زندگی اس کی\nاوہ تو دیرست تھا متعبا تھا، تجھکو یاد نہیں\nکسی کے قریب کی خواہش بھی ناتمام رہی\nا کوئی سمجھتا کہ سایہ تھا تجھکو یاد نہیں\nلیس آلیہ بار یکا ر تھا اس نے محفل میں\nاوہ دیرری تھی شناختا تھا، تجھکو یاد نہیں\nپہلے ہی بر ف کی ما شند زندگی گندری\nا کبائل پہنڈ ہوپ تھی بے بہتا تجھکو یاد نہیں\nمحمد",
+    "file_size": 29458,
+    "file_path": "D:\\UrduDoc AI\\uploads\\8e6b4275b24b4e33958a233b1fc636d0.jpg",
+    "extracted_text": "نہیں سرکاری نتائج کے مطابق مرکز اور صوبہ خیبر پختونخواہ میں تحریک انصاف نے میدان انوار\nلیا۔ پنجاب میں نون لیگ آگے ہے۔ صوبہ سندھ میں پیپلز پارٹی نے کامیابی حاصل کی۔\nکر اپنی میں ملک و شمن ایک کویو کا صافیا ہو گیا۔ بلوچستان میں ملا جلد راجان ہے۔ یہ نتائج وہی ہیں\nجس کی تین الٰہی قوتی میڈیا نے بھی پیٹوٹی کی تحریک پاکستان میں بھی تجریہ کار بھی کہہ رہے تھے\nکہ اصل متاثرہ تحریک انصاف اور نون لیگ میں ہو گا اور تحریک انصاف کا پورا اتحادی رہے گا۔",
     "language": "urdu",
     "processing_status": "completed",
-    "upload_timestamp": "2026-08-28T11:17:50.872043+00:00"
+    "upload_timestamp": "2026-08-28T23:59:15.380357+00:00"
+  },
+  "c51be5e53d2c4a2ca760a2c32cfe456d.png": {
+    "document_id": "c51be5e53d2c4a2ca760a2c32cfe456d.png",
+    "original_filename": "class_samples_grid.png",
+    "file_type": "image/png",
+    "file_size": 16831356,
+    "file_path": "D:\\UrduDoc AI\\uploads\\c51be5e53d2c4a2ca760a2c32cfe456d.png",
+    "extracted_text": null,
+    "language": "unknown",
+    "processing_status": "failed",
+    "upload_timestamp": "2026-08-29T00:00:42.926325+00:00"
+  },
+  "312610b1479c4f90a023d716e7e541d5.png": {
+    "document_id": "312610b1479c4f90a023d716e7e541d5.png",
+    "original_filename": "Screenshot 2026-08-25 051040.png",
+    "file_type": "image/png",
+    "file_size": 102902,
+    "file_path": "D:\\UrduDoc AI\\uploads\\312610b1479c4f90a023d716e7e541d5.png",
+    "extracted_text": "امید کی روشنی\nایک چھوٹے سے گاؤں میں علی نام کا ایک لڑکا رہتا تھا۔ وہ بہت محنتی تھا، لیکن اس کے گھر کے حالات اچھے نہیں تھے۔ اس کے والد ایک کسان تھے اور علی اپنی پڑھائی کے ساتھ کھیتوں میں بھی ان کی مدد کرتا تھا۔\nایک دن اسکول میں ایک استاد نے بچوں کو ایک خواب کے بارے میں بتایا۔ استاد نے کہا کہ انسان کی سب سے بڑی دولت بڑی امید ہے۔ علی نے اس بات کو اپنے دل میں بٹھا لیا۔\nاس واقعے کے بعد گاؤں کے لوگوں کے لیے امید کی روشنی بن گیا۔ علی نے بٹوے کے مالک کو تھوڑی پریشان ہو کر اپنا بٹوا دھونڈ کر دیا۔ علی کو انعام دینا چاہا، لیکن علی نے انکار کر دیا۔\nایف کی۔ علی نے ثابت کر دیا کہ واقعی استاد بن گیا اور گاؤں والوں کی بہت تعریف کی۔ ایمانداری کی بہت تعریف کی۔ کچھ دیر بعد اس ایک شروع کرنا شروع کیا۔ کچھ دیر بعد اس ایک شروع کرنا شروع کیا۔ علی نے بٹوا اسے واپس کر دیا۔ پریشان ہو کر اپنا بٹوا دھونڈ رہا تھا۔ علی نے انکار کر دیا۔\nایف کی۔ علی نے ثابت کر دیا کہ واقعی استاد بن گیا اور گاؤں والوں کی بہت تعریف کی۔ ایمانداری کی بہت تعریف کی۔ کچھ دیر بعد اس ایک شروع کرنا شروع کیا۔ کچھ دیر بعد اس ایک شروع کرنا شروع کیا۔ علی نے بٹوا اسے واپس کر دیا۔ پریشان ہو کر اپنا بٹوا دھونڈ رہا تھا۔ علی نے انکار کر دیا۔",
+    "language": "urdu",
+    "processing_status": "completed",
+    "upload_timestamp": "2026-08-29T00:07:23.218755+00:00"
+  },
+  "c2b66ef2338e4f91b13fd2e20181ea52.jpg": {
+    "document_id": "c2b66ef2338e4f91b13fd2e20181ea52.jpg",
+    "original_filename": "images (1).jfif",
+    "file_type": "image/jpeg",
+    "file_size": 29458,
+    "file_path": "D:\\UrduDoc AI\\uploads\\c2b66ef2338e4f91b13fd2e20181ea52.jpg",
+    "extracted_text": "غیر سرکاری نتائج کے مطابق مرکز اور صوبہ خیبر پختونخواہ میں تحریک انصاف نے میدان مار\nلیا۔ پنجاب میں نون لیگ آگے ہے۔ صوبہ سندھ میں پیپلز پارٹی نے کامیابی حاصل کی۔\nکرپشن میں ملک و وطن اکھڑا کا صفایا ہو گیا۔ بلوچستان میں ملا جلا نتائج ہیں۔ پی ٹی آئی وہی ہیں\nجس کی بین الاقوامی میڈیا نے بھی پیٹھ ٹھونکی تھی پاکستان میں بھی تجریہ کار بھی کہہ رہے تھے کہ\nکر اصل متاثرہ تحریک انصاف اور نون لیگ میں ہو گا اور تحریک انصاف کا پلڑا بھاری رہے گا۔",
+    "language": "urdu",
+    "processing_status": "completed",
+    "upload_timestamp": "2026-08-29T00:09:12.420047+00:00"
   }
 }
