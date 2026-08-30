@@ -105,6 +105,7 @@ async def get_document(document_id: str):
         "processing_status": record.get("processing_status"),
         "upload_timestamp": record.get("upload_timestamp"),
         "extracted_text": record.get("extracted_text"),
+        "has_uncertain_text": record.get("has_uncertain_text", False),
         "image_url": f"/api/documents/{document_id}/image",
     }
 
@@ -157,11 +158,13 @@ async def ocr_document(document_id: str):
             pass
 
         language = storage_service.detect_language(extracted_text)
+        has_uncertain_text = text_cleaning_service.has_uncertain_text(extracted_text)
         record = storage_service.update_document(
             document_id,
             processing_status="completed",
             language=language,
             extracted_text=extracted_text,
+            has_uncertain_text=has_uncertain_text,
         )
     elif status == "empty":
         record = storage_service.update_document(
@@ -169,6 +172,7 @@ async def ocr_document(document_id: str):
             processing_status="completed",
             language="unknown",
             extracted_text="",
+            has_uncertain_text=False,
         )
     else:
         record = storage_service.update_document(document_id, processing_status="failed")

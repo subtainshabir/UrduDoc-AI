@@ -4,6 +4,8 @@ ZERO_WIDTH_CHARS = ["\ufeff", "\u200b", "\u200c", "\u200d"]
 
 REPEATED_SPACE_PATTERN = re.compile(r"[ \t]+")
 
+UNCERTAIN_MARKER_PATTERN = re.compile(r"\[unclear\]", re.IGNORECASE)
+
 
 def clean_text(text: str) -> str:
     if not text:
@@ -41,3 +43,13 @@ def clean_text(text: str) -> str:
         final_lines.pop()
 
     return "\n".join(final_lines)
+
+
+def count_uncertain_markers(text: str) -> int:
+    if not text:
+        return 0
+    return len(UNCERTAIN_MARKER_PATTERN.findall(text))
+
+
+def has_uncertain_text(text: str) -> bool:
+    return count_uncertain_markers(text) > 0

@@ -608,6 +608,19 @@ body {
     font-size: 0.9rem;
 }
 
+.uncertain-text-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1rem 1.5rem 0;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-sm);
+    background: #FBF3E4;
+    border: 1px solid #EFDCB3;
+    color: #8A6416;
+    font-size: 0.85rem;
+}
+
 /* Chat panel */
 
 .chat-panel {

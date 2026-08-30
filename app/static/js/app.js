@@ -23,6 +23,7 @@ const extractedTextLoading = document.getElementById("extracted-text-loading");
 const extractedTextError = document.getElementById("extracted-text-error");
 const extractedTextEmpty = document.getElementById("extracted-text-empty");
 const extractedTextPending = document.getElementById("extracted-text-pending");
+const extractedTextUncertainNotice = document.getElementById("extracted-text-uncertain-notice");
 const extractedTextContent = document.getElementById("extracted-text-content");
 
 const docList = document.getElementById("doc-list");
@@ -79,6 +80,7 @@ function setExtractedTextState(state, options = {}) {
     extractedTextError.classList.add("d-none");
     extractedTextEmpty.classList.add("d-none");
     extractedTextPending.classList.add("d-none");
+    extractedTextUncertainNotice.classList.add("d-none");
     extractedTextContent.textContent = "";
 
     if (state === "loading") {
@@ -92,6 +94,9 @@ function setExtractedTextState(state, options = {}) {
         extractedTextPending.classList.remove("d-none");
     } else if (state === "content") {
         extractedTextContent.textContent = options.text || "";
+        if (options.uncertain) {
+            extractedTextUncertainNotice.classList.remove("d-none");
+        }
     }
 }
 
@@ -222,7 +227,7 @@ function renderDocumentDetail(detail) {
     currentExtractedText = detail.extracted_text || null;
 
     if (detail.processing_status === "completed" && detail.extracted_text) {
-        setExtractedTextState("content", { text: detail.extracted_text });
+        setExtractedTextState("content", { text: detail.extracted_text, uncertain: detail.has_uncertain_text });
     } else if (detail.processing_status === "completed") {
         setExtractedTextState("empty");
     } else if (detail.processing_status === "failed") {
@@ -402,7 +407,10 @@ extractTextBtn.addEventListener("click", async () => {
         }
 
         if (data.status === "success") {
-            setExtractedTextState("content", { text: data.extracted_text });
+            setExtractedTextState("content", {
+                text: data.extracted_text,
+                uncertain: data.metadata && data.metadata.has_uncertain_text,
+            });
             currentExtractedText = data.extracted_text;
         } else if (data.status === "empty") {
             setExtractedTextState("empty");

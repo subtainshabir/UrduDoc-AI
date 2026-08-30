@@ -56,6 +56,7 @@ def create_document(document_id: str, original_filename: str, file_type: str,
             "language": "unknown",
             "processing_status": "pending",
             "upload_timestamp": _now(),
+            "has_uncertain_text": False,
         }
         data[document_id] = record
         _save_all(data)
