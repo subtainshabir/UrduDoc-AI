@@ -134,7 +134,7 @@ async function loadConversation(documentId) {
     }
 }
 
-function appendChatMessage(role, text) {
+function appendChatMessage(role, text, evidence) {
     const placeholder = chatMessages.querySelector(".chat-placeholder");
     if (placeholder) {
         placeholder.remove();
@@ -142,11 +142,35 @@ function appendChatMessage(role, text) {
 
     const message = document.createElement("div");
     message.className = `chat-message chat-message-${role}`;
-    message.innerHTML = `
-        <div class="chat-message-sender">${role === "user" ? "You" : "UrduDoc AI"}</div>
-        <div class="chat-message-bubble" dir="auto"></div>
-    `;
-    message.querySelector(".chat-message-bubble").textContent = text;
+
+    const sender = document.createElement("div");
+    sender.className = "chat-message-sender";
+    sender.textContent = role === "user" ? "You" : "UrduDoc AI";
+    message.appendChild(sender);
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-message-bubble";
+    bubble.dir = "auto";
+    bubble.textContent = text;
+    message.appendChild(bubble);
+
+    if (role === "assistant" && evidence && evidence.trim()) {
+        const evidenceBox = document.createElement("div");
+        evidenceBox.className = "chat-evidence";
+
+        const evidenceLabel = document.createElement("div");
+        evidenceLabel.className = "chat-evidence-label";
+        evidenceLabel.innerHTML = '<i class="bi bi-quote"></i> Evidence';
+        evidenceBox.appendChild(evidenceLabel);
+
+        const evidenceText = document.createElement("div");
+        evidenceText.className = "chat-evidence-text";
+        evidenceText.dir = "auto";
+        evidenceText.textContent = evidence.trim();
+        evidenceBox.appendChild(evidenceText);
+
+        message.appendChild(evidenceBox);
+    }
 
     chatMessages.appendChild(message);
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -181,7 +205,7 @@ async function sendChatQuestion() {
         if (!response.ok) {
             appendChatMessage("assistant", data.detail || "Something went wrong. Please try again.");
         } else if (data.status === "success") {
-            appendChatMessage("assistant", data.answer);
+            appendChatMessage("assistant", data.answer, data.evidence);
         } else {
             appendChatMessage("assistant", data.error || "Could not answer that question. Please try again.");
         }

@@ -209,6 +209,7 @@ async def ask_document(document_id: str, payload: AskRequest):
             "document_id": document_id,
             "question": question,
             "answer": None,
+            "evidence": None,
             "status": "failed",
             "error": "This document has no extracted text yet. Run Extract text first.",
         }
@@ -216,7 +217,13 @@ async def ask_document(document_id: str, payload: AskRequest):
     conversation = conversation_service.get_conversation(document_id)
     prior_messages = conversation.get("messages", []) if conversation else []
 
-    result = qa_service.ask_question(document_text, question, history=prior_messages)
+    result = qa_service.ask_question(
+        document_id,
+        document_text,
+        question,
+        history=prior_messages,
+        has_uncertain_text=record.get("has_uncertain_text", False),
+    )
 
     if result.get("status") == "success":
         conversation_service.append_messages(document_id, [
@@ -228,6 +235,7 @@ async def ask_document(document_id: str, payload: AskRequest):
         "document_id": document_id,
         "question": question,
         "answer": result.get("answer"),
+        "evidence": result.get("evidence"),
         "status": result.get("status", "failed"),
         "error": result.get("error"),
     }
